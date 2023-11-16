@@ -1,0 +1,11 @@
+def f1_score(img,label):
+    TP = ((img == 1) & (label == 1)).sum(dim=(-1,-2))
+    TN = ((img == 0) & (label == 0)).sum(dim=(-1,-2))
+    FN = ((img == 0) & (label == 1)).sum(dim=(-1,-2))
+    FP = ((img == 1) & (label == 0)).sum(dim=(-1,-2))
+    acc=(TP + TN) / (TP + TN + FP + FN + 1e-9)
+    p = TP / (TP + FP + 1e-9)
+    r = TP / (TP + FN + 1e-9)
+    sp=TN/(TN+FP + 1e-9)
+    F1 = 2 * r * p / (r + p + 1e-9)
+    return F1.mean(),r.mean(),sp.mean(),acc.mean()
