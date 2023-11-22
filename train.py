@@ -8,7 +8,7 @@ from torchvision.transforms import RandomResizedCrop
 import torch.nn as nn
 
 from eval_f1 import evaluate
-from mynet import UNet
+from mynet import CMP_UNet
 from utils.data_loading import BasicDataset
 
 
@@ -110,7 +110,7 @@ def train_model(
                 f.write('\n'.join(loss_lr_note)+'\n')
             loss_lr_note=[]
 
-        if epoch>90:
+        if epoch>(epochs-10):
             torch.save(model.state_dict(), save_path + '/'+str(epoch)+'.pth')
 
 
@@ -142,7 +142,7 @@ if __name__ == '__main__':
         paths.append(save_path)
         print('save_path',save_path)
 
-        model = UNet(n_channels=3, n_classes=args.classes)
+        model = CMP_UNet(n_channels=3, n_classes=args.classes)
 
         if args.load:
             state_dict = torch.load(args.load, map_location=device)
